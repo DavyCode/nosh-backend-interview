@@ -52,7 +52,7 @@ mongoose.Query.prototype.exec = async function () {
 
 	if (result && result !== null) {
 		// store result into cache
-		CacheService.setCache(`${this.hashKey}`, JSON.stringify(result), 15);
+		await CacheService.setCache(`${this.hashKey}`, JSON.stringify(result), 15);
 	}
 
 	log(`cacheValue:: ====FROM DB====`);

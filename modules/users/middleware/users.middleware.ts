@@ -1,14 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import userService from "../services/user.services";
 import debug from "debug";
-import jwt from "jsonwebtoken";
-import { JWT_SECRET, JWT_EXPIRATION_MINUTES } from "../../../config/env";
-import {
-	UnauthorizedError,
-	ForbiddenError,
-	NotFoundError,
-	BadRequestError,
-} from "../../../common/utils/errors";
+import { NotFoundError, BadRequestError } from "../../../common/utils/errors";
 
 const log: debug.IDebugger = debug("app:users-controller");
 

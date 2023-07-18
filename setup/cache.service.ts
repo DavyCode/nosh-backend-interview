@@ -24,13 +24,20 @@ class CacheService {
 		return true;
 	}
 
-	setCache(key: string, value: any, time?: number) {
+	async setCache(key: string, value: any, time?: number | undefined) {
 		if (time) {
 			redisClient.set(key, value, "EX", time);
 		} else {
 			redisClient.set(key, value);
 		}
 		log(`You SET cache Value ${{ key, value }}`);
+	}
+
+	async getCacheAsync(key: string) {
+		const val = await redisGetAsync(key);
+
+		log(`You GET cache Value::`, val);
+		return val;
 	}
 
 	async flushCache() {
