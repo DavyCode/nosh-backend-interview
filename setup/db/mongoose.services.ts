@@ -28,7 +28,6 @@ mongoose.Query.prototype.exec = async function () {
 	if (!this.useCache) {
 		log("Do not Use cache");
 		return exec.apply(this);
-		// return exec.apply(this, arguments);
 	}
 
 	log(`hashKey:: ${this.hashKey}`);
@@ -36,13 +35,10 @@ mongoose.Query.prototype.exec = async function () {
 	// check if query key exist in cache
 	const cacheValue = await redisGetAsync(`${this.hashKey}`);
 
-	console.log({ cacheValue }, "=====>>>");
-
 	if (cacheValue) {
 		log(`cacheValue:: ===FROM CACHE====`);
 
 		const doc = JSON.parse(cacheValue);
-		console.log({ doc, type: typeof doc }, "<<<<<<<<<=====>>>");
 
 		// mongoose exec function expects to return a model instance of mongoose document
 		// also we handle cases where query result is either an object or array
@@ -52,16 +48,12 @@ mongoose.Query.prototype.exec = async function () {
 	}
 
 	// else proceed to mongoose to fetch query
-	// const result = await exec.apply(this, arguments);
 	const result = await exec.apply(this);
 
 	if (result && result !== null) {
 		// store result into cache
-		// redisClient.set(`${this.hashKey}`, JSON.stringify(result), "EX", 15);
-
 		CacheService.setCache(`${this.hashKey}`, JSON.stringify(result), 15);
 	}
-	console.log({ result, useCache: this.useCache }, "=====>>>");
 
 	log(`cacheValue:: ====FROM DB====`);
 

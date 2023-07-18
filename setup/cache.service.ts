@@ -1,7 +1,6 @@
 /* eslint-disable prefer-rest-params */
 import debug from "debug";
 import RedisService from "./db/redis.services";
-import mongooseService from "./db/mongoose.services";
 import { promisify } from "util";
 
 const redisClient = RedisService.getRedis();
